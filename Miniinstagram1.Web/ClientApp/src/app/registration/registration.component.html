@@ -1,0 +1,9 @@
+<div class="form-row text-center">
+    <div class="text-center col-md-3 col-md-offset-3">
+        <h1 class="h3 mb-3 font-weight-normal">Register new user now!</h1>
+        <input type="email" id="inputEmail" class="form-control" name="username" type="text" placeholder="username" [formControl]="username">
+        <input type="password" id="inputPassword" name="password" type="text" placeholder="password" [formControl]="password" class="form-control mb-2" >
+        <button class="btn btn-lg btn-primary btn-block mt-2" (click)="register()">Register</button>
+        <a href="http://localhost:4200/login" class="btn btn-lg btn-primary btn-block" type="submit">Back to login</a>
+      </div>
+</div>
