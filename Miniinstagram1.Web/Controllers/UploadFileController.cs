@@ -19,20 +19,13 @@ namespace Miniinstagram1.Web.Controllers
     [Authorize]
     public class UploadFileController : Controller
     {
-        DatabaseContext _context;
         IHostingEnvironment _appEnvironment;
         ImageServices _imageService;
 
-        public UploadFileController(DatabaseContext context, IHostingEnvironment appEnvironment, ImageServices imageService)
+        public UploadFileController(IHostingEnvironment appEnvironment, ImageServices imageService)
         {
-            _context = context;
             _appEnvironment = appEnvironment;
             _imageService = imageService;
-        }
-
-        public IActionResult Index()
-        {
-            return Ok(_context.Images.ToList());
         }
 
         [HttpPost]
@@ -45,9 +38,15 @@ namespace Miniinstagram1.Web.Controllers
                 return Unauthorized();
             }
             var imageAddingResult = await _imageService.Add(vm, _appEnvironment.WebRootPath, new Guid(userIdClaim.Value));
-            if (imageAddingResult)
-                return Ok();
-            return BadRequest();
+            return imageAddingResult ? (IActionResult)Ok() : BadRequest();
+        }
+
+        [HttpGet]
+        [Route("all")]
+        public IActionResult GetAll()
+        {
+            var Images = _imageService.GetAll();
+            return Images != null ? (IActionResult)Ok(Images) : BadRequest();
         }
     }
 }

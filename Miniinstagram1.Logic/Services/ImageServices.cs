@@ -23,14 +23,14 @@ namespace Miniinstagram1.Logic
         ImagesReposetry _reposetry;
         public async Task<bool> Add(
             ImageViewModel vm,
-            IHostingEnvironment appEnvironment,
+            string rootPath,
             Guid userId)
         {
             if (vm.File != null)
             {
                 string path = "/Images/" + vm.File.FileName + '_' + vm.Category + '_' + userId;
 
-                using (var fileStream = new FileStream(appEnvironment.WebRootPath + path, FileMode.Create, FileAccess.Write))
+                using (var fileStream = new FileStream(rootPath + path, FileMode.Create, FileAccess.Write))
                 {
                     await vm.File.CopyToAsync(fileStream);
                 }
@@ -45,28 +45,12 @@ namespace Miniinstagram1.Logic
                 _reposetry.Create(image);
                 return true;
             }
-            else
-                return false;
-        }
-
-        public Image Get(string id)
-        {
-            throw new NotImplementedException();
+            return false;
         }
 
         public ICollection<Image> GetAll()
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> Delete(Image item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> Update(Image item)
-        {
-            throw new NotImplementedException();
+            return _reposetry.GetAll();
         }
     }
 }

@@ -59,8 +59,8 @@ namespace Miniinstagram1.Web
                         .AllowAnyHeader();
                     });
             });
-            services.AddScoped<ImagesReposetry>();
-            services.AddScoped<ImageServices>();
+            services.AddTransient<ImagesReposetry>();
+            services.AddTransient<ImageServices>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

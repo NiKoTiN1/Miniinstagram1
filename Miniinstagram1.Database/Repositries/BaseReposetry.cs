@@ -1,6 +1,8 @@
-﻿using Miniinstagram1.Database.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using Miniinstagram1.Database.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Miniinstagram1.Database.Repositries
@@ -11,31 +13,41 @@ namespace Miniinstagram1.Database.Repositries
         {
             _context = context;
         }
+
+        DbSet<T> set => _context.Set<T>();
+
         DatabaseContext _context;
         public void Create(T item)
         {
-            _context.Add<T>(item);
+            set.Add(item);
             _context.SaveChanges();
         }
 
         public void Delete(T item)
         {
-            throw new NotImplementedException();
+            set.Remove(item);
+            _context.SaveChanges();
         }
 
         public T Get(string id)
         {
-            throw new NotImplementedException();
+            var item = set.Find(id);
+            return item;
         }
 
         public ICollection<T> GetAll()
         {
-            throw new NotImplementedException();
+            return set.ToList();
         }
 
-        public virtual void Update(T item)
+        public virtual void Update(T item, string id)
         {
-            throw new NotImplementedException();
+            var elem = set.Find(id);
+            if(elem != null)
+            {
+                elem = item;
+                _context.SaveChanges();
+            }
         }
     }
 }

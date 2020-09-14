@@ -23,11 +23,6 @@ namespace Miniinstagram1.Web.Controllers
         {
             _userManager = userManager;
         }
-        [HttpGet]
-        public IActionResult Register()
-        {
-            return View();
-        }
 
         [HttpPost]
         [Route("register")]
@@ -36,7 +31,7 @@ namespace Miniinstagram1.Web.Controllers
             if (ModelState.IsValid)
             {
                 ApplicationUser user = new ApplicationUser { Email = model.Email, UserName = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
+                var result = await _userManager.CreateAsync(user, model.Password);
                 if (!result.Succeeded)
                 {
                     foreach (var error in result.Errors)
@@ -53,12 +48,12 @@ namespace Miniinstagram1.Web.Controllers
         [Route("login")]
         public async Task<IActionResult> Login(LoginViewModel vm)
         {
-            if(ModelState.IsValid && vm != null)
+            if (ModelState.IsValid && vm != null)
             {
                 var user = await ValidateUser(vm);
                 if (user != null)
                 {
-                    return Ok(new { Token = GenerateToken(user)});
+                    return Ok(new { Token = GenerateToken(user) });
                 }
             }
             return BadRequest(new { Message = "Login faild" });
@@ -67,10 +62,10 @@ namespace Miniinstagram1.Web.Controllers
         private async Task<ApplicationUser> ValidateUser(LoginViewModel vm)
         {
             var user = await _userManager.FindByNameAsync(vm.Email);
-            if(user != null)
+            if (user != null)
             {
                 var result = _userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, vm.Password);
-                if(result != PasswordVerificationResult.Failed)
+                if (result != PasswordVerificationResult.Failed)
                 {
                     return user;
                 }
