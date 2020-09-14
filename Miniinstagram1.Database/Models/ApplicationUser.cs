@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace Miniinstagram1.Database
 {
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser : IdentityUser<Guid>
     {
         public virtual ICollection<Image> Images { get; set; }
     }

@@ -8,6 +8,6 @@ namespace Miniinstagram1.Database.Interfaces
         void Delete(T item);
         T Get(string id);
         ICollection<T> GetAll();
-        void Update(T itemб, string id);
+        void Update(T item, string id);
     }
 }

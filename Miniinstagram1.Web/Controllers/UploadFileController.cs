@@ -46,7 +46,7 @@ namespace Miniinstagram1.Web.Controllers
         public IActionResult GetAll()
         {
             var Images = _imageService.GetAll();
-            return Images != null ? (IActionResult)Ok(Images) : BadRequest();
+            return Images.Count != 0 ? (IActionResult)Ok(Images) : BadRequest();
         }
     }
 }
