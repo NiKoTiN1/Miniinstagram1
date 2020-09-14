@@ -9,6 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Miniinstagram1.Database;
+using Miniinstagram1.Database.Interfaces;
+using Miniinstagram1.Database.Repositries;
+using Miniinstagram1.Logic;
 
 namespace Miniinstagram1.Web
 {
@@ -56,6 +59,9 @@ namespace Miniinstagram1.Web
                         .AllowAnyHeader();
                     });
             });
+            services.AddScoped<ImagesReposetry>();
+            services.AddScoped<ImageServices>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

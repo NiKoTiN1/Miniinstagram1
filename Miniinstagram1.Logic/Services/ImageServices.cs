@@ -8,15 +8,21 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Miniinstagram1.Database;
+using Miniinstagram1.Database.Repositries;
+using Miniinstagram1.Logic.Interfaces;
 using Miniinstagram1.ViewModels;
 
 namespace Miniinstagram1.Logic
 {
-    public static class ImageServices
+    public class ImageServices: IImageServices
     {
-        public static async Task<IActionResult> Add(
+        public ImageServices(ImagesReposetry reposetry)
+        {
+            _reposetry = reposetry;
+        }
+        ImagesReposetry _reposetry;
+        public async Task<bool> Add(
             ImageViewModel vm,
-            DatabaseContext context,
             IHostingEnvironment appEnvironment,
             Guid userId)
         {
@@ -36,12 +42,31 @@ namespace Miniinstagram1.Logic
                     UploadDate = DateTime.Now,
                     UserId = userId.ToString(),
                 };
-                context.Images.Add(image);
-                context.SaveChanges();
-                return new OkResult();
+                _reposetry.Create(image);
+                return true;
             }
             else
-                return new BadRequestResult();
+                return false;
+        }
+
+        public Image Get(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICollection<Image> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> Delete(Image item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> Update(Image item)
+        {
+            throw new NotImplementedException();
         }
     }
 }

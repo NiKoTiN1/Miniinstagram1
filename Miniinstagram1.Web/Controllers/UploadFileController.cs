@@ -21,11 +21,13 @@ namespace Miniinstagram1.Web.Controllers
     {
         DatabaseContext _context;
         IHostingEnvironment _appEnvironment;
+        ImageServices _imageService;
 
-        public UploadFileController(DatabaseContext context, IHostingEnvironment appEnvironment)
+        public UploadFileController(DatabaseContext context, IHostingEnvironment appEnvironment, ImageServices imageService)
         {
             _context = context;
             _appEnvironment = appEnvironment;
+            _imageService = imageService;
         }
 
         public IActionResult Index()
@@ -42,7 +44,10 @@ namespace Miniinstagram1.Web.Controllers
             {
                 return Unauthorized();
             }
-            return await ImageServices.Add(vm, _context, _appEnvironment, new Guid(userIdClaim.Value));
+            var imageAddingResult = await _imageService.Add(vm, _appEnvironment.WebRootPath, new Guid(userIdClaim.Value));
+            if (imageAddingResult)
+                return Ok();
+            return BadRequest();
         }
     }
 }
