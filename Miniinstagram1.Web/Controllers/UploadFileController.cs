@@ -11,6 +11,7 @@ using Miniinstagram1.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity.UI.Pages.Account.Internal;
+using Miniinstagram1.Logic.Interfaces;
 
 namespace Miniinstagram1.Web.Controllers
 {
@@ -20,9 +21,9 @@ namespace Miniinstagram1.Web.Controllers
     public class UploadFileController : Controller
     {
         IHostingEnvironment _appEnvironment;
-        ImageServices _imageService;
+        IImageServices _imageService;
 
-        public UploadFileController(IHostingEnvironment appEnvironment, ImageServices imageService)
+        public UploadFileController(IHostingEnvironment appEnvironment, IImageServices imageService)
         {
             _appEnvironment = appEnvironment;
             _imageService = imageService;

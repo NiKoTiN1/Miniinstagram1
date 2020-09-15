@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Miniinstagram1.Database;
+using Miniinstagram1.Database.Interfaces;
 using Miniinstagram1.Database.Repositries;
 using Miniinstagram1.Logic.Interfaces;
 using Miniinstagram1.ViewModels;
@@ -16,11 +17,11 @@ namespace Miniinstagram1.Logic
 {
     public class ImageServices: IImageServices
     {
-        public ImageServices(ImagesReposetry reposetry)
+        public ImageServices(IImagesReposetry reposetry)
         {
             _reposetry = reposetry;
         }
-        ImagesReposetry _reposetry;
+        IImagesReposetry _reposetry;
         public async Task<bool> Add(
             ImageViewModel vm,
             string rootPath,
@@ -40,7 +41,7 @@ namespace Miniinstagram1.Logic
                     Path = path,
                     category = vm.Category,
                     UploadDate = DateTime.Now,
-                    UserId = userId.ToString(),
+                    UserId = userId,
                 };
                 _reposetry.Create(image);
                 return true;

@@ -30,18 +30,21 @@ namespace Miniinstagram1.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = new ApplicationUser { Email = model.Email, UserName = model.Email };
+                ApplicationUser user = new ApplicationUser { Email = model.Email, UserName = model.Username };
                 var result = await _userManager.CreateAsync(user, model.Password);
-                if (!result.Succeeded)
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+                else
                 {
                     foreach (var error in result.Errors)
                     {
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
-                    return BadRequest("Some Error");
                 }
             }
-            return Ok();
+            return BadRequest("Some Error");
         }
 
         [HttpPost]
@@ -61,7 +64,7 @@ namespace Miniinstagram1.Web.Controllers
 
         private async Task<ApplicationUser> ValidateUser(LoginViewModel vm)
         {
-            var user = await _userManager.FindByNameAsync(vm.Email);
+            var user = await _userManager.FindByEmailAsync(vm.Email);
             if (user != null)
             {
                 var result = _userManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, vm.Password);

@@ -12,6 +12,8 @@ using Miniinstagram1.Database;
 using Miniinstagram1.Database.Interfaces;
 using Miniinstagram1.Database.Repositries;
 using Miniinstagram1.Logic;
+using Miniinstagram1.Logic.Interfaces;
+using System;
 
 namespace Miniinstagram1.Web
 {
@@ -29,7 +31,7 @@ namespace Miniinstagram1.Web
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole<Guid> >()
                 .AddEntityFrameworkStores<DatabaseContext>();
 
             services.AddAuthentication(options =>
@@ -59,8 +61,8 @@ namespace Miniinstagram1.Web
                         .AllowAnyHeader();
                     });
             });
-            services.AddTransient<ImagesReposetry>();
-            services.AddTransient<ImageServices>();
+            services.AddTransient<IImagesReposetry, ImagesReposetry>();
+            services.AddTransient<IImageServices, ImageServices>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
