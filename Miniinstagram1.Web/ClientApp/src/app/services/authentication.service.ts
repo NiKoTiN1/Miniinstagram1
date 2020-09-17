@@ -5,6 +5,8 @@ import { tap, map, switchMap, catchError } from 'rxjs/operators';
 import { AuthService } from 'ngx-auth';
 
  import { TokenStorage } from './token-storage.service';
+import { environment } from 'src/environments/environment';
+import { LoginModel } from '../Common/models/login.model';
 
 interface AccessData {
   token: string;
@@ -29,19 +31,7 @@ export class AuthenticationService implements AuthService {
   }
 
   public refreshToken(): Observable <AccessData> {
-    return this.tokenStorage
-      .getRefreshToken()
-      .pipe(
-        switchMap((refreshToken: string) =>
-          this.http.post(`http://localhost:3000/refresh`, { refreshToken })
-        ),
-        tap((tokens: AccessData) => this.saveAccessData(tokens)),
-        catchError((err) => {
-          this.logout();
-
-          return Observable.throw(err);
-        })
-      );
+    return;
   }
 
   public refreshShouldHappen(response: HttpErrorResponse): boolean {
@@ -52,12 +42,12 @@ export class AuthenticationService implements AuthService {
     return url.endsWith('/refresh');
   }
 
-  public login(email:string, password:string): Observable<any> {
+  public login(model: LoginModel): Observable<any> {
     const formData = new FormData()
-    formData.append('Email', email)
-    formData.append('Password', password)
+    formData.append('Email', model.Email)
+    formData.append('Password', model.Password)
 
-    return this.http.post(`https://localhost:5001/api/account/login`, formData)
+    return this.http.post(environment.loginUrl, formData)
     .pipe(tap((token: AccessData) => this.saveAccessData(token)));
   }
 
@@ -72,7 +62,7 @@ export class AuthenticationService implements AuthService {
     formData.append('Password', password)
     formData.append('PasswordConfirm', password)
 
-    return this.http.post(`https://localhost:5001/api/account/register`, formData)
+    return this.http.post(environment.registerUrl, formData)
   }
 
   private saveAccessData({ token }: AccessData) {

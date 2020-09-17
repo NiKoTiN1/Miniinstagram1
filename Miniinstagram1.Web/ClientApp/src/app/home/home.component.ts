@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef  } from '@angular/core';
 import { HttpEventType, HttpErrorResponse } from '@angular/common/http';import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { UploadService } from  '../services/upload.service';
+import { ImageServices } from  '../services/image.services';
+import { ImageModel } from '../Common/models/image.model';
 
 @Component({
   selector: 'app-home',
@@ -12,44 +13,31 @@ import { UploadService } from  '../services/upload.service';
 export class HomeComponent implements OnInit {
     @ViewChild("fileUpload", {static: false}) fileUpload: ElementRef;
 
-    files  = [];
-    constructor(private uploadService: UploadService) { }
+    constructor(private uploadService: ImageServices) { }
   ngOnInit(): void {}
 
-    sendFile(file, category) {
-      const formData = new FormData();
-      formData.append('file', file.data);
-      formData.append('category', category);
-      file.inProgress = true;
-      this.uploadService.sendFormData(formData).subscribe((event: any) => {
-          if (typeof (event) === 'object') {
+public _imageModel: ImageModel = new ImageModel();
+
+    sendFile() {
+      this.uploadService.sendFormData(this._imageModel).subscribe((event: any) => {
+          if (event != null) {
             console.log(event.body);
           }
         });
     }
 
-    private sendFiles(category) {
-      this.fileUpload.nativeElement.value = '';
-      this.files.forEach(file => {
-        this.sendFile(file, category);
-      });
-  }
-
   onClick() {
-    const fileUpload = this.fileUpload.nativeElement;fileUpload.onchange = () => 
+    const fileUpload = this.fileUpload.nativeElement;
+    fileUpload.onchange = () => 
     {
-      for (let index = 0; index < fileUpload.files.length; index++)
-      {
-        const file = fileUpload.files[index];
-        this.files.push({ data: file, inProgress: false, progress: 0});
-      }
+      this._imageModel.File = fileUpload.files[0];
     };
      fileUpload.click();
   }
 
   onSaveClick(cat)
   {
-    this.fileUpload
-    this.sendFiles(cat.value);
+    this._imageModel.Category = cat.value;
+    this.sendFile();
   }
 }

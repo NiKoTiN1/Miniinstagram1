@@ -14,6 +14,9 @@ import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 
 import { PublicGuard, ProtectedGuard } from 'ngx-auth';
+import { AllImagesComponent } from './all-images/all-images.component';
+
+import { MatCardModule } from '@angular/material/card';
 
 
 
@@ -28,6 +31,7 @@ export function tokenGetter() {
     HttpClientModule,
     AuthenticationModule,
     ReactiveFormsModule,
+    MatCardModule ,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, canActivate: [ ProtectedGuard ] },
       { path: 'login', component: LoginComponent, canActivate: [ PublicGuard ] },
@@ -39,6 +43,7 @@ export function tokenGetter() {
     LogoutComponent,
     RegistrationComponent,
     LoginComponent,
+    AllImagesComponent,
   ],
 
   providers: [

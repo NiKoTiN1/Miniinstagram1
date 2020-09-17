@@ -1,19 +1,12 @@
 <div>
-    <ul>
-        <li *ngFor="let file of files">
-            
-            <span id="file-label">
-                {{file.data.name}}
-            </span>
-        </li>
-    </ul>
+    <div *ngIf="_imageModel.File">
+        <span>{{ _imageModel.File.name }}</span>
+    </div>
     <p>
         <input type="text" placeholder="Category" #category id="category" name="category" data-bind="value: Category"/>
     </p>
-    <button (click)="onClick()">
-        Upload
-    </button>
-    <input type="file" #fileUpload id="fileUpload" name="fileUpload" multiple="multiple" accept="image/*" style="display:none;" />
+    <button (click)="onClick()">Upload</button>
+    <input type="file" #fileUpload id="fileUpload" name="fileUpload" accept="image/*" style="display:none;" />
     <p>
         <button type="submit" (click)="onSaveClick(category)">Submit</button>
     </p>

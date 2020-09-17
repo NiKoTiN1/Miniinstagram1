@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { AuthService } from 'ngx-auth';
 import { AuthenticationService } from '../services/authentication.service';
 import { FormControl } from '@angular/forms';
+import { LoginModel } from '../Common/models/login.model';
+
 
 
 @Component({
@@ -21,13 +23,13 @@ export class LoginComponent implements OnInit {
 
   invalidLogin: boolean
 
-  username = new FormControl('');
-  password = new FormControl('');
 
-
-  login() {
+  login(username, password) {
+    var model = new LoginModel();
+    model.Email = username.value;
+    model.Password = password.value;
     this.authService
-    .login(this.username.value, this.password.value)
+    .login(model)
     .subscribe(() => this.router.navigateByUrl('/'));
   }
 
